@@ -1,6 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CasesService } from '../cases-service';
 import { CubeService, GanCubeState } from '../cube-service';
+import { ElementType, ThreeStyleCase } from '../../types';
+import { MoyuTest } from '../../smart-cube/moyu-test';
+import { SpeechService } from '../speech-service';
 
 @Component({
   selector: 'app-main-page',
@@ -10,29 +13,42 @@ import { CubeService, GanCubeState } from '../cube-service';
 })
 export class MainPage {
   private casesService = inject(CasesService);
-  private cubeService = inject(CubeService);
+  public cubeService = inject(CubeService);
 
   public nextCaseEl: ThreeStyleCase | null = null;
   protected nextCaseName = "";
 
   nextCase: ThreeStyleCase | null = null;
+  constructor(private speechService: SpeechService) {
 
+  };
   ngOnInit() {
+    // this.cubeService.resetCube();
     this.casesService.getAllCases();
     this.cubeService.setFunction(this.getNextCase.bind(this));
   }
-  connectCube() {
-    this.cubeService.connectCube();
+  connectCube(model: string) {
+    this.cubeService.connectCube(model);
   }
-  public getNextCase() {
+  resetCube() {
+    this.cubeService.resetCube();
+  }
+  public getNextCase(done: boolean) {
+    console.log("Getting next case");
     if (this.casesService.cases != null) {
+      if (done) {
+        this.casesService.cases = this.casesService.cases.filter(el => el.id !== this.nextCaseEl?.id);
+      }
+      if (this.casesService.cases == null) {
+        console.log("No more cases available");
+        return;
+      }
       var caseNumber = Math.floor(Math.random() * this.casesService.cases.length);
       var nCase: ThreeStyleCase = this.casesService.cases[caseNumber];
-      console.log(nCase);
       this.nextCaseEl = nCase;
-      console.log(nCase.firstElement)
-      this.nextCaseName = nCase.firstElement.name + " " + nCase.secondElement.name + " " + nCase.thirdElement.name;
+      this.nextCaseName = nCase.firstElement.letterMarks[0].mark + " " + nCase.secondElement.letterMarks[0].mark + " " + nCase.thirdElement.letterMarks[0].mark;
       this.swapElements();
+      this.speechService.playText(this.nextCaseEl.letterPairs[0].image);
     }
   }
 
@@ -68,28 +84,8 @@ export class MainPage {
       this.cubeService.newState = newState;
     }
   }
-
-}
-
-export type ThreeStyleCase = {
-  id: number,
-  firstElement: Element,
-  secondElement: Element,
-  thirdElement: Element,
-  personId: number,
-  caseType: ElementType,
-  isActive: boolean
-}
-
-type Element = {
-  id: number,
-  name: string,
-  type: ElementType,
-  position: number,
-  orientation: number
-}
-
-enum ElementType {
-  corner = 1,
-  edge = 2
+  connectMoyuCube() {
+    var x = new MoyuTest();
+    x.connectMoyuCube();
+  }
 }

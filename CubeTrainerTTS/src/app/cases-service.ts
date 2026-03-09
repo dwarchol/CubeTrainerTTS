@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ThreeStyleCase } from './main-page/main-page';
+import { ThreeStyleCase } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,9 @@ export class CasesService {
   }
 
   getAllCases() {
-    this.httpClient.get<Array<ThreeStyleCase>>('/api/ThreeStyleCase').subscribe(cases => {
+    this.httpClient.get<Array<ThreeStyleCase>>('/api/ThreeStyleCase/corners').subscribe(cases => {
       console.log(cases);
+      console.log(JSON.stringify(cases));
       this.cases = cases;
     });
   }
