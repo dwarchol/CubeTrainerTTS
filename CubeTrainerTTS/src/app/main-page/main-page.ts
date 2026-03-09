@@ -24,7 +24,8 @@ export class MainPage {
   };
   ngOnInit() {
     // this.cubeService.resetCube();
-    this.casesService.getAllCases();
+    // this.casesService.getAllCases();
+    this.casesService.getCasesNoApi();
     this.cubeService.setFunction(this.getNextCase.bind(this));
   }
   connectCube(model: string) {

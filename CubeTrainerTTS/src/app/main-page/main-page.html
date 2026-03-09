@@ -29,16 +29,16 @@
       <div class="temp-pill">{{ this.cubeService.temp }}</div>
 
       <!-- Show one based on caseType -->
-      <span class="tag corner">Corner</span>
+      <span class="tag corner"> {{this.nextCaseEl.caseType}}</span>
       <!-- <span class="tag edge">Edge</span> -->
 
       <!-- Letter pair -->
-      <h1 class="image-code">AB</h1>
+      <h1 class="image-code">{{ this.nextCaseName }}</h1>
       <!-- <p class="no-data">No letter pairs</p> -->
 
       <div class="divider"></div>
 
-      <h5 class="case-name">{{ this.nextCaseName }}</h5>
+      <h5 class="case-name">{{ this.nextCaseEl.letterPairs[0].image }}</h5>
     </div>
 
     <div class="actions">
