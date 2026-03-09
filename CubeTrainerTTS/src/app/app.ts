@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { CasesService } from './cases-service';
+// import { RouterOutlet } from '@angular/router';
+// import { CasesService } from './cases-service';
 import { MainPage } from "./main-page/main-page";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MainPage],
+  imports: [MainPage],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
